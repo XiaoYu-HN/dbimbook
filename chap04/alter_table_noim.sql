@@ -1,0 +1,11 @@
+@../userlogin.sql
+
+ALTER TABLE lineorder NOINMEMORY;
+
+ALTER TABLE part NOINMEMORY;
+
+ALTER TABLE customer NOINMEMORY;
+
+ALTER TABLE supplier NOINMEMORY;
+
+ALTER TABLE date_dim NOINMEMORY;
