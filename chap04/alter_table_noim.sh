@@ -1,3 +1,5 @@
+sqlplus /nolog <<-EOF
+
 @../userlogin.sql
 
 SET ECHO ON
@@ -13,3 +15,5 @@ ALTER TABLE supplier NO INMEMORY;
 ALTER TABLE date_dim NO INMEMORY;
 
 SET ECHO OFF
+
+EOF

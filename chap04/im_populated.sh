@@ -1,3 +1,5 @@
+sqlplus -S /nolog << 'EOF'
+
 @../userlogin.sql
 
 COL owner FORMAT A10
@@ -17,3 +19,5 @@ SELECT
     populate_status
 FROM
     v$im_segments;
+
+EOF
