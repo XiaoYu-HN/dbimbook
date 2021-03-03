@@ -21,4 +21,4 @@ GROUP BY
     complevel,
     compratio
 ORDER BY
-    complevel;
+    compratio;
