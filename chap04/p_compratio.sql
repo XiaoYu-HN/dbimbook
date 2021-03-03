@@ -1,4 +1,13 @@
-create or replace PROCEDURE p_compratio (
+-- execute this SQL like below:
+-- sqlplus sys@orclpdb1 as sysdba @p_compratio.sql
+
+drop table ssb.compresult;
+create table ssb.compresult(complevel varchar(32), poptime number, compratio number);
+
+grant select on v_$im_segments to ssb;
+grant execute on DBMS_INMEMORY_ADMIN to ssb;
+
+create or replace PROCEDURE ssb.p_compratio (
     tabname    IN  VARCHAR2,
     complevel  IN  VARCHAR2,
     num_run    IN  NUMBER
@@ -35,3 +44,6 @@ BEGIN
         COMMIT;
     END LOOP;
 END p_compratio;
+/
+
+exit

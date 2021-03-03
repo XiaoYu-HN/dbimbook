@@ -8,11 +8,11 @@ DECLARE
 	popresult number;
 	ratio number;
 BEGIN
-	FOR i IN 1..2
+	FOR i IN 1..1
 	LOOP
 
 		EXECUTE IMMEDIATE 'ALTER TABLE lineorder NO INMEMORY';
-		EXECUTE IMMEDIATE 'ALTER TABLE lineorder INMEMORY MEMCOMPRESS FOR QUERY LOW';
+		EXECUTE IMMEDIATE 'ALTER TABLE lineorder INMEMORY MEMCOMPRESS FOR CAPACITY LOW';
 
 		n := dbms_utility.get_time;
 
@@ -28,9 +28,6 @@ BEGIN
 
 		insert into t1 values(n, ratio);
 		commit;
-
-		dbms_output.put_line('pop time is:' || n);
-		dbms_output.put_line('ratio is:' || ratio);
 
 	END LOOP;
 END;
