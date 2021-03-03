@@ -1,22 +1,29 @@
 -- execute this SQL like below:
 -- sqlplus sys@orclpdb1 as sysdba @p_compratio.sql
 
-drop table ssb.compresult;
-create table ssb.compresult(complevel varchar(32), poptime number, compratio number, querytime number);
+DROP TABLE ssb.compresult;
 
-grant select on v_$im_segments to ssb;
-grant execute on DBMS_INMEMORY_ADMIN to ssb;
+CREATE TABLE ssb.compresult (
+    complevel  VARCHAR(32),
+    poptime    NUMBER,
+    compratio  NUMBER,
+    querytime  NUMBER
+);
 
-create or replace PROCEDURE ssb.p_compratio (
+GRANT SELECT ON v_$im_segments TO ssb;
+
+GRANT EXECUTE ON dbms_inmemory_admin TO ssb;
+
+CREATE OR REPLACE PROCEDURE p_compratio (
     tabname    IN  VARCHAR2,
     complevel  IN  VARCHAR2,
     num_run    IN  NUMBER
 ) AS
-    ptime    NUMBER;
-    qtime    NUMBER;
+    ptime      NUMBER;
+    qtime      NUMBER;
     popresult  NUMBER;
     compratio  NUMBER;
-	tmpsum	NUMBER;
+    tmpsum     NUMBER;
 BEGIN
     FOR i IN 1..num_run LOOP
         EXECUTE IMMEDIATE 'ALTER TABLE lineorder NO INMEMORY';
@@ -29,7 +36,6 @@ BEGIN
             dual;
 
         ptime := ( dbms_utility.get_time - ptime ) / 100;
-        
         SELECT
             round(bytes / inmemory_size, 2)
         INTO compratio
@@ -37,14 +43,18 @@ BEGIN
             v$im_segments;
 
         qtime := dbms_utility.get_time;
-	select min(lo_quantity) + max(lo_ordtotalprice) + avg(lo_ordtotalprice) + avg(lo_quantity)  into tmpsum from lineorder;
-        qtime := ( dbms_utility.get_time - qtime );
+        SELECT
+            MIN(lo_quantity) + MAX(lo_ordtotalprice) + AVG(lo_ordtotalprice) + AVG(lo_quantity)
+        INTO tmpsum
+        FROM
+            lineorder;
 
+        qtime := ( dbms_utility.get_time - qtime );
         INSERT INTO compresult VALUES (
             complevel,
             ptime,
             compratio,
-			qtime
+            qtime
         );
 
         COMMIT;
