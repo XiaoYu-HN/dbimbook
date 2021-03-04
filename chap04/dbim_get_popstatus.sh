@@ -15,7 +15,7 @@ SELECT
     inmemory_size / 1024                 AS "IN_MEM_SIZE(KB)",
     bytes / 1024                         AS "ON_DISK_SIZE(KB)",
     round(bytes / inmemory_size, 2)      AS "COMPRESSION_RATIO",
-    round((bytes - bytes_not_populated) / bytes, 2) * 100  AS "POPULATED%",
+    bytes_not_populated,
     populate_status
 FROM
     v$im_segments;
