@@ -9,7 +9,10 @@ echo
 
 cat ../SSB_TABLES.list | while read t; do
 	echo ALTER TABLE ${t,,} INMEMORY ${cl}\;
-	echo SELECT INMEMORY_PRIORITY FROM user_tables WHERE table_name = \'${t^^}\'\;
 	echo
 done
 
+cat ../SSB_TABLES.list | while read t; do
+	echo SELECT INMEMORY_PRIORITY FROM user_tables WHERE table_name = \'${t^^}\'\;
+	echo
+done
