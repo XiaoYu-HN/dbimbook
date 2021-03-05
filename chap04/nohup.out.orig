@@ -1,0 +1,1067 @@
+# pop_processes: 1
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:20.74
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 2
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:40.85
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 3
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.70
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 4
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.65
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 5
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.71
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 6
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.72
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 7
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.70
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 8
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.69
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 1
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:20.70
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 2
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:45.70
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 3
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.73
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 4
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.68
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 5
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.70
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 6
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.68
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 7
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.67
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 8
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.66
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 1
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:20.74
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 2
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:40.79
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 3
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:35.66
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 4
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:06:05.84
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 5
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:55.73
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 6
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:55.84
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 7
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:55.73
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 8
+
+System altered.
+
+
+
+BEGIN
+*
+ERROR at line 1:
+ORA-03113: end-of-file on communication channel
+Process ID: 53724
+Session ID: 162 Serial number: 48148
+
+
+Elapsed: 00:00:51.55
+ERROR:
+ORA-03114: not connected to ORACLE
+
+
+
+# pop_processes: 1
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 1
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 2
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 2
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 3
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 3
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 4
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 4
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 5
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 5
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 6
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 6
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 7
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 7
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 8
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 8
+*
+ERROR at line 1:
+ORA-01012: not logged on
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 1
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 1
+*
+ERROR at line 1:
+ORA-01034: ORACLE not available
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 2
+alter system set INMEMORY_MAX_POPULATE_SERVERS = 2
+*
+ERROR at line 1:
+ORA-01034: ORACLE not available
+Process ID: 0
+Session ID: 0 Serial number: 0
+
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 3
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 4
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 5
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 6
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 7
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 8
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 1
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 2
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 3
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 4
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 5
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 6
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 7
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 8
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 1
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 2
+
+System altered.
+
+ERROR:
+ORA-12514: TNS:listener does not currently know of service requested in connect
+descriptor
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 3
+
+System altered.
+
+ERROR:
+ORA-01109: database not open
+
+
+Warning: You are no longer connected to ORACLE.
+
+
+SP2-0640: Not connected
+SP2-0640: Not connected
+SP2-0641: "PRINT" requires connection to server
+
+# pop_processes: 4
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:03.46
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 5
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:04:11.42
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 6
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.15
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 7
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.16
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 8
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:02:10.94
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 1
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.01
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 2
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.28
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 3
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:55.90
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 4
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.08
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 5
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.13
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 6
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.03
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 7
+
+System altered.
+
+
+
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:56.02
+
+POP_STATUS
+----------
+	 0
+
+
+# pop_processes: 8
+
+System altered.
+
+
+
