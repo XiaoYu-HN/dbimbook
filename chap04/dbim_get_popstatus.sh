@@ -22,4 +22,7 @@ SELECT
 FROM
     v$im_segments;
 
+select sum(bytes)/1024 as "TOTAL_DISK_SIZE(KB)", sum(inmemory_size)/1024 as "TOTAL_IM_SIZE(KB)",
+sum(bytes)/sum(inmemory_size) as OVERALL_COMPRESSION_RATIO from v$im_segments;
+
 EOF
