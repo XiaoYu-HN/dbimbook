@@ -2,14 +2,14 @@ sqlplus -S /nolog << 'EOF'
 
 @../userlogin.sql
 
-COL owner FORMAT A10
-COL segment_name heading 'SEGMENT|NAME' FORMAT A12
+COL owner FORMAT A6
+COL segment_name heading 'SEGMENT|NAME' FORMAT A10
 COL populate_status heading 'POPULATED|STATUS'
 COL "IN_MEM_SIZE(KB)" heading 'IN MEM|SIZE(KB)' FORMAT 999,999,999
 COL "ON_DISK_SIZE(KB)" heading 'ON DISK|SIZE(KB)' FORMAT 999,999,999
 COL bytes_not_populated heading 'BYTES NOT|POPULATED' 
 COL compression_ratio heading 'COMPRESSION|RATIO'
-SET LINESIZE 160
+SET LINESIZE 140
 
 SELECT
     owner,
@@ -23,6 +23,6 @@ FROM
     v$im_segments;
 
 select sum(bytes)/1024 as "TOTAL_DISK_SIZE(KB)", sum(inmemory_size)/1024 as "TOTAL_IM_SIZE(KB)",
-sum(bytes)/sum(inmemory_size) as OVERALL_COMPRESSION_RATIO from v$im_segments;
+round(sum(bytes)/sum(inmemory_size),2) as OVERALL_COMPRESSION_RATIO from v$im_segments;
 
 EOF

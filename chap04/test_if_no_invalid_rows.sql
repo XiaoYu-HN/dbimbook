@@ -8,6 +8,7 @@ begin
 	select to_char(sysdate, 'hh:mi:ss') into t1 from dual;
 	loop
 		select sum(invalid_rows) into n from V$IM_SMU_HEAD;
+		dbms_session.sleep(1);
 		exit when n=0;
 	end loop;
 	select to_char(sysdate, 'hh:mi:ss') into t2 from dual;
