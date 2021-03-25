@@ -1,0 +1,1164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<!-- Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+All rights reserved.-->
+<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+<TITLE>In-Memory Placement Recommendation Report</TITLE>
+<STYLE TYPE="text/css">
+<!--
+TD P { color: #000000 }
+H1 { color: #000000 }
+P { color: #000000 }
+H3 { color: #000000 }
+H3.cjk { font-family: "FZSongTi" }
+H3.ctl { font-family: "Mangal" }
+H3.heading-2-western { font-size: 18pt }
+H3.heading-2-cjk { font-family: "FZSongTi"; font-size: 18pt }
+H3.heading-2-ctl { font-family: "Mangal"; font-size: 18pt }
+TH P { color: #000000 }
+H1.heading-2-western { font-family: "Times New Roman", serif; font-size: 18pt }
+H1.heading-2-cjk { font-family: "FZSongTi"; font-size: 18pt }
+H1.heading-2-ctl { font-family: "Mangal"; font-size: 18pt }
+-->
+</STYLE>
+<style type="text/css">
+p.break_word10 {
+width: 10em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word11 {
+width: 11em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word12 {
+width: 12em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word13 {
+width: 13em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word14 {
+width: 14em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word15 {
+width: 15em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word16 {
+width: 16em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word17 {
+width: 17em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word18 {
+width: 18em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word19 {
+width: 19em;
+word-wrap: break-word;
+}
+</style>
+<style type="text/css">
+p.break_word20 {
+width: 20em;
+word-wrap: break-word;
+}
+</style>
+
+<style type="text/css">
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: LightBlue;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
+</style>
+
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#ffffff" DIR="LTR">
+<H3 CLASS="western"><IMG SRC="http://www.oracle.com/technetwork/oem/em-12c-sm-clr-496687.gif"
+ ALT="Oracle Enterprise Manger" ALIGN=LEFT VSPACE=3 WIDTH=162 HEIGHT=42 BORDER=0>Oracle Database
+ In-Memory
+Advisor
+</H3>
+<P><BR><BR>
+</P>
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Advisor Objectives </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      Hover your mouse over any blue, italic header for information on this report's tables and columns.
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+<TR VALIGN=TOP>
+<TD>
+<P>The In-Memory database feature can be employed to improve the
+performance of a variety of database operations, the greatest of
+which is analytics processing.</P><P>The objective of the In-Memory
+Advisor is to produce recommendations to optimize analytics
+processing.  As with SQL optimizer cost estimates, estimates for
+In-Memory sizes and performance benefits need not be precise in
+order to produce optimal In-Memory configurations.</P>
+</TD>
+</TR>
+</TABLE>
+
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Workload Database Usage </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      The In-Memory Advisor measures the activity on objects and SQL statements using Active Session History (ASH)
+and optimizes for analytics processing.   The Advisor differentiates analytics processing from
+non-analytics (transaction) processing based upon the types of Active Session History
+(ASH) activity samples and SQL plan information.
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+<COL WIDTH=100>
+<COL WIDTH=100>
+<COL WIDTH=100>
+<TR VALIGN=BOTTOM>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:90px; width:190px"> <h3> <font color="blue"> <i>
+    Total Database Time (Seconds)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      The total database time in seconds is the total database activity during the statistics capture window captured
+from ASH in the Automatic Workload Repository (AWR) and optionally from live ASH data.  When using live ASH data, the value
+will differ from other database reporting facilities.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:90px; width:190px"> <h3> <font color="blue"> <i>
+    Analytics Processing Time (Seconds)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      Analytics processing seconds is the amount of database activity in seconds that is analytical in nature.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:90px; width:190px"> <h3> <font color="blue"> <i>
+    Analytics Processing Percentage
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      Analytics processing  percentage is the portion of database activity that is analytical in nature.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+</TR>
+<TR VALIGN=TOP>
+<TD>
+<P ALIGN=RIGHT>186</P>
+</TD>
+<TD>
+<P ALIGN=RIGHT>144</P>
+</TD>
+<TD>
+<P ALIGN=RIGHT>77%</P>
+</TD>
+</TR>
+</TABLE>
+
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>In-Memory Sizes </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      The In-Memory Advisor optimizes for a user-specified In-Memory size. This table shows a potential list
+of In-Memory sizes, percentage of maximum SGA size and estimated performance benefits.
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+<TR>
+<TD>
+<P>Up to an application-specific limit, larger In-Memory sizes will
+result in greater analytics processing performance improvements.<BR><BR>The In-Memory Advisor first
+ produces a list of
+In-Memory sizes and estimated analytics processing performance
+improvement factors.  These estimates are based on statistics captured from your database while your
+ application was running.</P>
+<P>For this report,  you selected an In-Memory size of 1.465GB.</P>
+</TD>
+</TR>
+</TABLE>
+<BR>
+
+<TABLE WIDTH=600 BORDER=2 CELLPADDING=2 CELLSPACING=0 STYLE="page-break-inside: avoid">
+<COL WIDTH=150>
+<COL WIDTH=150>
+<COL WIDTH=150>
+<COL WIDTH=150>
+<TR VALIGN=BOTTOM>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:150px; width:140px"> <h3> <font color="blue"> <i>
+    In-Memory Size
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows a list of potential In-Memory sizes comprised of 5% increments up to the maximum recommended
+In-Memory size.   You may specify any In-Memory size you wish for the Advisor to optimize.   The size you wish
+need not be shown in this list.   If you have already specified an In-Memory size, it will also be shown in this
+ list along with the 5% increments.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:150px; width:140px"> <h3> <font color="blue"> <i>
+    Percentage of Maximum SGA Size (2.441GB)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the percentage of the maximum SGA size that would be used by the In-Memory size.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:150px; width:140px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Time Reduction (Seconds)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the reduction in the number of analytic processing seconds estimated for the In-Memory size.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+<TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:150px; width:140px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Performance Improvement Factor
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the performance improvement factor estimated for the In-Memory size.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+</TH>
+</TR>
+
+<!-- Because this subvar is inside a table but not in a row or column prior to substitution, it can
+ appear before the table header with a browser. -->
+<!-- The substitution variable should contain rows and columns, which will cause them to dispay
+ correctly within the table. -->
+
+    <TR>
+      <TD><P ALIGN=RIGHT STYLE="background: #ffff00; border: none; padding: 0in">
+        <B><SPAN STYLE="background: transparent">1.465GB</SPAN></B></P></TD>
+      <TD><P ALIGN=RIGHT STYLE="background: #ffff00; border: none; padding: 0in">
+        <B><SPAN STYLE="background: transparent">60%</SPAN></B></P></TD>
+      <TD><P ALIGN=RIGHT STYLE="background: #ffff00; border: none; padding: 0in">
+        <B><SPAN STYLE="background: transparent">111</SPAN></B></P></TD>
+      <TD><P ALIGN=RIGHT STYLE="background: #ffff00; border: none; padding: 0in">
+        <B><SPAN STYLE="background: transparent">4.4X</SPAN></B></P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">357.0MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">14%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">111</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">4.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">339.1MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">14%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">321.3MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">13%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">303.4MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">12%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">285.6MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">11%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">267.7MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">11%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">249.9MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">10%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">232.0MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">9%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">214.2MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">9%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">196.3MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">8%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">178.5MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">7%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">160.6MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">6%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">142.8MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">6%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">124.9MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">5%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">107.1MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">4%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">89.24MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">4%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">71.40MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">3%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">53.55MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">2%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">35.70MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">44</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.4X</P></TD>
+   </TR>
+
+   <TR>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">17.85MB</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1%</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">26</P></TD>
+    <TD><P ALIGN=RIGHT STYLE="border: none; padding: 0in">1.2X</P></TD>
+   </TR>
+
+
+</TABLE>
+
+
+
+<BR>
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+<TR>
+<TD>
+<P ALIGN=LEFT>The following recommendations are designed to optimize your database
+ application's analytics processing with  the 1.465GB In-Memory size which you selected.</P>
+</TD>
+</TR>
+</TABLE>
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>
+With 1.465GB, The One SQL Statement With Analytics Processing Benefit </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+This table shows the estimated performance improvements for all SQL statements that appear in Active Session History (ASH) and which are estimated to have a performance improvement.
+
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=2 CELLPADDING=2 CELLSPACING=0>
+  <COL WIDTH=70>
+  <COL WIDTH=180>
+  <COL WIDTH=70>
+  <COL WIDTH=70>
+  <COL WIDTH=70>
+  <COL WIDTH=70>
+  <COL WIDTH=70>
+  <TR VALIGN=BOTTOM>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:130px"> <h3> <font color="blue"> <i>
+    SQL Id
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the sql_id which identifies each SQL statement with an estimated performance improvement.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:285px"> <h3> <font color="blue"> <i>
+    SQL Text
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows a portion of the SQL statement text. If the SQL statement is too long, it is truncated
+to fit into the report. When truncated, "..." is shown at the end.
+<br/><br/>
+NOTE: The SQL text is not necessarily available for all the SQL statements which are seen in ASH.  Frequently,
+more SQL text can be added with DBMS_INMEMORY_ADVISOR.ADD_SQLSET.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:110px"> <h3> <font color="blue"> <i>
+    Analytics Processing Time Used (Seconds)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the total number of analytic processing seconds used by the SQL statement for analytic object
+activity.  Since the In-Memory Advisor optimizes for In-Memory placement of objects, the Advisor does not include
+any non-object activity or non-analytic activity.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:110px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Time Reduction (Seconds) With Unlimited Memory
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated reduction in the number of analytic processing seconds for the SQL statement with an unlimited In-Memory size.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:135px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Performance Improvement Factor With Unlimited Memory
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated performance improvement factor for the SQL statement with an unlimited In-Memory size.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:110px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Time Reduction (Seconds) With 1.465GB
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated reduction in the number of analytic processing seconds for the SQL statement
+with In-Memory size you specified (the default is the maximum recommended In-Memory size).
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:210px; width:135px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Performance Improvement Factor With 1.465GB
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated performance improvement factor for the SQL statement with the In-Memory size
+you specified (the default is the maximum recommended In-Memory size).
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+  </TR>
+
+
+      <TR>
+        <TD>
+          <P>1j27r1q60jqa0</P>
+        </TD>
+        <TD>
+          <P class=break_word18>SELECT     d.d_year,     p.p_brand1,     SUM(lo_revenue)          tot_rev,     COUNT(p.p_partkey)...</P>
+        </TD>
+        <TD>
+          <P>144
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>55</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1.6X</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>55</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1.6X</P>
+        </TD>
+      </TR>
+
+</TABLE>
+
+<BR>
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>
+With 1.465GB, All 4 Objects Recommended To Place In-Memory For Analytics Processing </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+This table shows the estimated In-Memory size and estimated performance improvements with the recommended In-Memory placement of objects and recommended compression types.
+
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=2 CELLPADDING=2 CELLSPACING=0>
+  <TR VALIGN=BOTTOM>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:130px"> <h3> <font color="blue"> <i>
+    Object Type
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the recommended object type: TABLE, PARTITION or SUBPARTITION.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:225px"> <h3> <font color="blue"> <i>
+    Object
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the recommended object name: OWNER_NAME . TABLE_NAME [ .PARTITION_NAME [ .SUBPARTITION_NAME ] ]
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:130px"> <h3> <font color="blue"> <i>
+    Compression Type
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the recommended In-Memory compression type for this object that fits best with the In-Memory
+size you specified (default is the maximum recommended In-Memory size).
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:115px"> <h3> <font color="blue"> <i>
+    Estimated In-Memory Size
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated In-Memory size for the object with the recommended In-Memory compression type.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  The In-Memory
+size estimate for an object is based upon the number of rows, average row size, column data types and the recommended In-Memory compression
+type.  The actual In-Memory size is determined by these attributes but also varies depending on data value diversity, data density and data
+sequence in the object.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:110px"> <h3> <font color="blue"> <i>
+    Analytics Processing Seconds
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the number of analytic activity seconds used on this object during the statistics capture window.  Since analytic
+seconds are only a portion of total database time, the analytic seconds will generally not match the database time shown
+by other database reporting facilities.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:110px"> <h3> <font color="blue"> <i>
+    Estimated Reduced Analytics Processing Seconds
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated reduction in the number of analytic processing seconds with the placement
+of this object In-Memory with the recommended compression type.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:135px"> <h3> <font color="blue"> <i>
+    Estimated Analytics Processing Performance Improvement Factor
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the estimated performance improvement factor with the placement of this object In-Memory with the recommended compression type.
+<br/><br/>NOTE: The In-Memory Advisor's estimates are useful for making In-Memory decisions.  Due
+to performance variations caused by workload diversity, the Advisor's performance estimates are conservatively
+limited to no more than         10.0X faster, while actual In-Memory performance improvements can sometimes be
+thousands of times faster.  Workload variations can also sometimes result in In-Memory Advisor overstated performance
+improvement estimates.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:185px; width:115px"> <h3> <font color="blue"> <i>
+    Benefit / Cost Ratio (Reduced Analytics Processing / In-Memory Size)
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This column shows the performance-benefit / In-Memory-size-cost ratio.  The In-Memory Advisor ranks
+objects for In-Memory placement with specific In-Memory compression types based upon their benefit/cost ratios.
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+  </TR>
+
+
+      <TR>
+        <TD>
+          <P>TABLE</P>
+        </TD>
+        <TD>
+          <P class=break_word14>SSB.DATE_DIM</P>
+        </TD>
+        <TD>
+          <P>Memory compress for query low
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1.063MB</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>20</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>13</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>3.0X</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1167 : 1</P>
+        </TD>
+      </TR>
+
+      <TR>
+        <TD>
+          <P>TABLE</P>
+        </TD>
+        <TD>
+          <P class=break_word14>SSB.SUPPLIER</P>
+        </TD>
+        <TD>
+          <P>Memory compress for query low
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1.063MB</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>20</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>13</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>3.0X</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>199 : 1</P>
+        </TD>
+      </TR>
+
+      <TR>
+        <TD>
+          <P>TABLE</P>
+        </TD>
+        <TD>
+          <P class=break_word14>SSB.PART</P>
+        </TD>
+        <TD>
+          <P>Memory compress for query low
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>20.74MB</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>26</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>18</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>3.6X</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>5 : 1</P>
+        </TD>
+      </TR>
+
+      <TR>
+        <TD>
+          <P>TABLE</P>
+        </TD>
+        <TD>
+          <P class=break_word14>SSB.LINEORDER</P>
+        </TD>
+        <TD>
+          <P>Memory compress for query low
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>274.6MB</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>80</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>67</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>6.4X</P>
+        </TD>
+        <TD>
+          <P ALIGN=RIGHT>1 : 1</P>
+        </TD>
+      </TR>
+
+</TABLE>
+
+<P><BR>Click <A HREF="#rationale_summary">here</A> to view a rationale summary for the above described recommendations.</P>
+
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Database For Which The In-Memory Advisor Optimized </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This table describes the database for which the In-Memory Advisor optimized along with information about the In-Memory Advisor version and its run.
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=2 CELLSPACING=0>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Name</P>
+      </TD>
+      <TD>
+        <P>ORCLCDB</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Identifier</P>
+      </TD>
+      <TD>
+        <P>2837271925</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Pluggable Database Name</P>
+      </TD>
+      <TD>
+        <P>ORCLPDB1</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Pluggable Database Identifier</P>
+      </TD>
+      <TD>
+        <P>3634233361</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Pluggable Database Container Identifier</P>
+      </TD>
+      <TD>
+        <P>3</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Creation Date</P>
+      </TD>
+      <TD>
+        <P>03-MAR-21</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Instance Name</P>
+      </TD>
+      <TD>
+        <P>ORCLCDB</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Instance Number</P>
+      </TD>
+      <TD>
+        <P>1</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database Instance Version</P>
+      </TD>
+      <TD>
+        <P>Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>SGA Maximum Size</P>
+      </TD>
+      <TD>
+        <P>2.441GB</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>In-Memory Size</P>
+      </TD>
+      <TD>
+        <P>1.465GB</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Unused In-Memory Space</P>
+      </TD>
+      <TD>
+        <P>1.465GB</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Oracle Database In-Memory Advisor</P>
+      </TD>
+      <TD>
+        <P>Version 2.0.0.1.1 Build #1222.1<br>Build date 2017-JAN-12 18:29:02<br>Installation date 2021-MAR-24 20:42:57</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Capture Start Time</P>
+      </TD>
+      <TD>
+        <P>2021-MAR-24 20:58:22</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Capture End Time</P>
+      </TD>
+      <TD>
+        <P>2021-MAR-24 21:58:21</P>
+      </TD>
+    </TR>
+
+    <TR>
+      <TD>
+        <P>Report Date</P>
+      </TD>
+      <TD>
+        <P>2021-MAR-24 21:58:40</P>
+      </TD>
+    </TR>
+
+</TABLE>
+<P><BR>Click <A HREF="#ddl_script">here</A> to view the DDL script that implements the above
+ described recommendations.</P>
+
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Advisor Methods </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+      This table describes how the In-Memory Advisor forms its estimates in order to optimize for In-Memory placement.
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+<TR VALIGN=TOP>
+<TD>
+
+<P>The In-Memory Advisor differentiates Analytics Processing from
+other database activity based upon the SQL plan cardinaility, the Active Session History (ASH)
+state, employment of parallel query, and other data and statistics.</P>
+
+<P>The In-Memory Advisor estimates the In-Memory size of objects
+based upon heuristic compression factors along with object data
+such as row counts, avererage row sizes and column data types.</P>
+
+<P>The In-Memory Advisor estimates Analytic Processing
+performance improvement factors based upon the following:</P>
+
+<UL>
+<LI><P>Elimination of user I/O waits, cluster transfer waits, buffer cache
+latch waits, etc.</P></LI>
+<LI><P>Certain query processing advantages related to specific compression types.</P></LI>
+<LI><P>Decompression cost heuristics per specific compression types.</P></LI>
+<LI><P>SQL plan selectivity, number of columns in the result set, etc.</P></LI>
+</UL>
+</TD>
+</TABLE>
+
+<BR>
+<a name="sql_benefit"></a>
+
+
+
+
+<BR>
+<a name="object_benefit"></a>
+
+
+
+
+<BR>
+<a name="rationale_summary"></a>
+
+
+
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Recommendation Rationale Summary </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+This table shows a summary of the rationales for the In-Memory Advisor's decisions.
+
+  </span> </b> </i> </div>
+</div>
+
+<TABLE WIDTH=600 BORDER=2 CELLPADDING=2 CELLSPACING=0>
+  <TR VALIGN=BOTTOM>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:75px; width:480px"> <h3> <font color="blue"> <i>
+    Rationale
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+This column shows the rationale for a number of the In-Memory Advisor's decisions.
+
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+    <TH>
+
+<div class="dropdown">
+  <button class="dropbtn" style="height:75px; width:100px"> <h3> <font color="blue"> <i>
+    Candidate Count
+  </i> </font> </h3> </button>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+This column shows the number of candidate objects (tables, partitions or subpartitions) that the In-Memory Advisor decided upon with the given rationale.
+
+  </span> </b> </i> </div>
+</div>
+
+    </TH>
+  </TR>
+
+
+      <TR>
+        <TD>
+          <P>Fits along with any other objects recommended to be placed into in-memory storage with the inmemory_size used in this report and resulting in an estimated additional DB time reduction</P>
+        </TD>
+        <TD>
+          <P>4</P>
+        </TD>
+      </TR>
+
+      <TR>
+        <TD>
+          <P>The estimated benefit of placing this object with this compression type into the in-memory store does not exceed the estimated benefits of other recommendations related to this object</P>
+        </TD>
+        <TD>
+          <P>20</P>
+        </TD>
+      </TR>
+
+</TABLE>
+
+<BR>
+<a name="ddl_script"></a>
+
+<div class="dropdown">
+  <h1 class="heading-2-western"> <font color="blue"> <i>Recommendation Implementation SQL Script </i> </font> </h1>
+  <div class="dropdown-content"> <i> <b> <span style="background-color: #ADD8E6">
+
+The following shows the recommended DDL statements for In-Memory placement.
+
+  </span> </b> </i> </div>
+</div>
+<P ALIGN=LEFT STYLE="border: none; padding: 0in">Rem Copyright (c) 2014, 2016, Oracle and/or its affiliates.  All rights reserved.</P>
+<P ALIGN=LEFT STYLE="border: none; padding: 0in">ALTER TABLE "SSB"."LINEORDER" INMEMORY MEMCOMPRESS FOR QUERY LOW;</P>
+<P ALIGN=LEFT STYLE="border: none; padding: 0in">ALTER TABLE "SSB"."PART" INMEMORY MEMCOMPRESS FOR QUERY LOW;</P>
+<P ALIGN=LEFT STYLE="border: none; padding: 0in">ALTER TABLE "SSB"."DATE_DIM" INMEMORY MEMCOMPRESS FOR QUERY LOW;</P>
+<P ALIGN=LEFT STYLE="border: none; padding: 0in">ALTER TABLE "SSB"."SUPPLIER" INMEMORY MEMCOMPRESS FOR QUERY LOW;</P>
+
+
+</BODY>
+</HTML>
