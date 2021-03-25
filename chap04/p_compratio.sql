@@ -1,18 +1,24 @@
 -- execute this SQL like below:
--- sqlplus sys@orclpdb1 as sysdba @p_compratio.sql
+-- sqlplus /nolog @p_compratio.sql
 
-DROP TABLE ssb.compresult;
+connect / as sysdba;
+alter session set container=orclpdb1;
 
-CREATE TABLE ssb.compresult (
+GRANT SELECT ON v_$im_segments TO ssb;
+
+GRANT EXECUTE ON dbms_inmemory_admin TO ssb;
+
+@../userlogin
+
+DROP TABLE compresult;
+
+CREATE TABLE compresult (
     complevel  VARCHAR(32),
     poptime    NUMBER,
     compratio  NUMBER,
     querytime  NUMBER
 );
 
-GRANT SELECT ON v_$im_segments TO ssb;
-
-GRANT EXECUTE ON dbms_inmemory_admin TO ssb;
 
 CREATE OR REPLACE PROCEDURE p_compratio (
     tabname    IN  VARCHAR2,
