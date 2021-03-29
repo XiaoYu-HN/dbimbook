@@ -15,7 +15,7 @@ declare
 		'compress for archive low',
 		'compress for archive high',
 		'row store compress advanced',
-		'compress basic'
+		'row store compress basic'
 	);
 begin
 	select sum(bytes) into bytes_uncomp from user_segments where segment_name = 'T1';
