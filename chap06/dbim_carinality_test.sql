@@ -59,7 +59,9 @@ WHERE
 
 prompt compression ratio for query high 
 alter table t1 inmemory memcompress for query high;
+alter table t2 inmemory memcompress for query high;
 exec popwait('SSB', 'T1');
+exec popwait('SSB', 'T2');
 
 SELECT
     segment_name,
@@ -73,7 +75,9 @@ WHERE
 
 prompt compression ratio for capacity low 
 alter table t1 inmemory memcompress for capacity low;
+alter table t2 inmemory memcompress for capacity low;
 exec popwait('SSB', 'T1');
+exec popwait('SSB', 'T2');
 
 SELECT
     segment_name,
@@ -88,7 +92,9 @@ WHERE
 
 prompt compression ratio for capacity high 
 alter table t1 inmemory memcompress for capacity high;
+alter table t2 inmemory memcompress for capacity high;
 exec popwait('SSB', 'T1');
+exec popwait('SSB', 'T2');
 
 SELECT
     segment_name,
