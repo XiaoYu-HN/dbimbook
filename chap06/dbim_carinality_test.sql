@@ -37,6 +37,7 @@ select count(distinct(a)) from t1;
 prompt cardinality for table t2
 select count(distinct(a)) from t2;
 
+prompt compression ratio for query low 
 alter table t1 inmemory;
 alter table t2 inmemory;
 
@@ -56,6 +57,7 @@ WHERE
     segment_name IN ( 'T1', 'T2' );
 
 
+prompt compression ratio for query high 
 alter table t1 inmemory memcompress for query high;
 exec popwait('ssb', 't1');
 
@@ -69,6 +71,7 @@ FROM
 WHERE
     segment_name IN ( 'T1', 'T2' );
 
+prompt compression ratio for capacity low 
 alter table t1 inmemory memcompress for capacity low;
 exec popwait('ssb', 't1');
 
@@ -83,6 +86,7 @@ WHERE
     segment_name IN ( 'T1', 'T2' );
 
 
+prompt compression ratio for capacity high 
 alter table t1 inmemory memcompress for capacity high;
 exec popwait('ssb', 't1');
 
