@@ -41,8 +41,8 @@ alter table t1 inmemory;
 alter table t2 inmemory;
 
 set serveroutput on
-exec popwait('ssb', 't1');
-exec popwait('ssb', 't2');
+exec popwait('SSB', 'T1');
+exec popwait('SSB', 'T2');
 
 col segment_name for a10
 SELECT
@@ -57,7 +57,7 @@ WHERE
 
 
 alter table t1 inmemory memcompress for query high;
-exec popwait('ssb', 't1');
+exec popwait('SSB', 'T1');
 
 SELECT
     segment_name,
@@ -70,7 +70,7 @@ WHERE
     segment_name IN ( 'T1', 'T2' );
 
 alter table t1 inmemory memcompress for capacity low;
-exec popwait('ssb', 't1');
+exec popwait('SSB', 'T1');
 
 SELECT
     segment_name,
@@ -84,7 +84,7 @@ WHERE
 
 
 alter table t1 inmemory memcompress for capacity high;
-exec popwait('ssb', 't1');
+exec popwait('SSB', 'T1');
 
 SELECT
     segment_name,
