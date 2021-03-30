@@ -40,10 +40,9 @@ select count(distinct(a)) from t2;
 alter table t1 inmemory;
 alter table t2 inmemory;
 
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t1 p;
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t2 p;
-
-pause wait until full populated...
+set serveroutput on
+exec popwait('ssb', 't1');
+exec popwait('ssb', 't2');
 
 col segment_name for a10
 SELECT
@@ -58,9 +57,7 @@ WHERE
 
 
 alter table t1 inmemory memcompress for query high;
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t1 p;
-
-pause wait until full populated...
+exec popwait('ssb', 't1');
 
 SELECT
     segment_name,
@@ -73,9 +70,7 @@ WHERE
     segment_name IN ( 'T1', 'T2' );
 
 alter table t1 inmemory memcompress for capacity low;
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t1 p;
-
-pause wait until full populated...
+exec popwait('ssb', 't1');
 
 SELECT
     segment_name,
@@ -87,10 +82,9 @@ FROM
 WHERE
     segment_name IN ( 'T1', 'T2' );
 
-pause wait until full populated...
 
 alter table t1 inmemory memcompress for capacity high;
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t1 p;
+exec popwait('ssb', 't1');
 
 SELECT
     segment_name,

@@ -7,7 +7,7 @@ CREATE OR REPLACE PROCEDURE popwait (
     ts  NUMBER := 0;
     t1  NUMBER := dbms_utility.get_time;
 BEGIN
-    DBMS_INMEMORY.POPULATE(schema_name, table_name);
+    DBMS_INMEMORY.POPULATE(upper(schema_name), upper(table_name));
     
     LOOP
         BEGIN
@@ -27,13 +27,18 @@ BEGIN
         EXIT WHEN ps = 'COMPLETED' OR ts > timeout;
     END LOOP;
 
-    dbms_output.put_line('Pop time:'
+    dbms_output.put_line('Pop time for table (' || upper(table_name) || '): '
                          ||(dbms_utility.get_time - t1) / 100
                          || ' seconds');
 
 END popwait;
 /
--- alter table lineorder inmemory
--- alter table lineorder no inmemory
--- exec popwait();
+
+/*
+-- test code
+set serveroutput on
+alter table lineorder no inmemory;
+alter table lineorder inmemory;
+exec popwait('ssb', 'lineorder');
+*/
 
