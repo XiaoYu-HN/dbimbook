@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE popwait (
     schema_name IN VARCHAR2 DEFAULT 'SSB',
     table_name IN VARCHAR2 DEFAULT 'LINEORDER',
-    timeout IN NUMBER DEFAULT 10
+    timeout IN NUMBER DEFAULT 120
 ) AS
     ok  NUMBER := 0;
     ts  NUMBER := 0;
@@ -37,5 +37,19 @@ set serveroutput on
 alter table lineorder no inmemory;
 alter table lineorder inmemory;
 exec popwait('ssb', 'lineorder');
+
+SELECT
+    segment_name,
+    inmemory_compression,
+    bytes,
+    populate_status,
+    bytes_not_populated,
+    inmemory_size,
+    round(bytes / inmemory_size, 2) AS compress_ratio
+FROM
+    v$im_segments
+WHERE
+    segment_name IN ( 'LINEORDER');
 */
+
 
