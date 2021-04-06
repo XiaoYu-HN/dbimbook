@@ -3,7 +3,7 @@ infile 'lineorder.tbl'
 badfile 'lineorder.bad'
 discardfile 'lineorder.disc'
 append
-into table  ssb.lineorder fields terminated by '|'
+into table ssb.lineorder fields terminated by '|'
 nullif = blanks
 (LO_ORDERKEY ,
 LO_LINENUMBER ,
