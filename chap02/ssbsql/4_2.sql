@@ -1,4 +1,4 @@
-SELECT
+SELECT /* 4.2 SSB_SAMPLE_SQL */
     d_year,
     s_nation,
     p_category,
