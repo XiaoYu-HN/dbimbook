@@ -1,4 +1,4 @@
-SELECT
+SELECT /* 2.1 SSB_SAMPLE_SQL */
     SUM(lo_revenue),
     d_year,
     p_brand1

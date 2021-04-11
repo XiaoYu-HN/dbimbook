@@ -1,4 +1,4 @@
-SELECT
+SELECT /* 4.1 SSB_SAMPLE_SQL */
     d_year,
     c_nation,
     SUM(lo_revenue - lo_supplycost) AS profit
