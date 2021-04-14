@@ -1,1 +1,1 @@
-connect ssb/ABcd123_#@orclpdb1
+connect ssb/Welcome1@orclpdb1

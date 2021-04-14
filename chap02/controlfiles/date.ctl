@@ -1,3 +1,4 @@
+options (direct=true)
 load data 
 infile 'date.tbl'
 badfile 'date_dim.bad'

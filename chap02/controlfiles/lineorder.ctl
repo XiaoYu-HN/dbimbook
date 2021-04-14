@@ -1,3 +1,4 @@
+options (direct=true)
 load data 
 infile 'lineorder.tbl'
 badfile 'lineorder.bad'
@@ -22,4 +23,3 @@ LO_SUPPLYCOST ,
 LO_TAX ,
 LO_COMMITDATE ,
 LO_SHIPMODE )
-

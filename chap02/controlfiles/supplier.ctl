@@ -1,3 +1,4 @@
+options (direct=true)
 load data 
 infile 'supplier.tbl'
 badfile 'supplier.bad'

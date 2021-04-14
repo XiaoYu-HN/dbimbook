@@ -1,3 +1,4 @@
+options (direct=true)
 load data 
 infile 'part.tbl'
 badfile 'part.bad'

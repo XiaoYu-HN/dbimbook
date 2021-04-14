@@ -1,3 +1,4 @@
+options (direct=true)
 load data 
 infile 'customer.tbl'
 badfile 'customer.bad'
@@ -15,4 +16,3 @@ C_REGION ,
 C_PHONE ,
 C_MKTSEGMENT 
 )
-
