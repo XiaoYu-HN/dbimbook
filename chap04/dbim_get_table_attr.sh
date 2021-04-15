@@ -18,7 +18,6 @@ SELECT
 FROM
     dba_segments
 WHERE
-    segment_name IN ( 'CUSTOMER', 'DATE_DIM', 'LINEORDER', 'PART', 'SUPPLIER', 'T2' );
-    --segment_name IN ( 'CUSTOMER', 'DATE_DIM', 'LINEORDER', 'PART', 'SUPPLIER' );
+    segment_name IN ( 'CUSTOMER', 'DATE_DIM', 'LINEORDER', 'PART', 'SUPPLIER' );
 
 EOF
