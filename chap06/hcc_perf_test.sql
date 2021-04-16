@@ -19,14 +19,14 @@ alter system flush buffer_cache
 col value noprint new_value start_cpu
 select value
 from v$sesstat s, v$statname n
-where sid = (select sid from v$mystat where rownum < 2)
+where sid = SYS_CONTEXT('USERENV','SID')
 and s.statistic# = n.statistic#
 and n.name in ('CPU used by this session')
 /
 col value noprint new_value start_reads
 select value
 from v$sesstat s, v$statname n
-where sid = (select sid from v$mystat where rownum < 2)
+where sid = SYS_CONTEXT('USERENV','SID')
 and s.statistic# = n.statistic#
 and n.name in ('session logical reads')
 /
@@ -48,13 +48,13 @@ group by
 set autot off
 select value - &start_cpu cpu_consumed
 from v$sesstat s, v$statname n
-where sid = (select sid from v$mystat where rownum < 2)
+where sid = SYS_CONTEXT('USERENV','SID')
 and s.statistic# = n.statistic#
 and n.name in ('CPU used by this session')
 /
 select value - &start_reads logical_reads
 from v$sesstat s, v$statname n
-where sid = (select sid from v$mystat where rownum < 2)
+where sid = SYS_CONTEXT('USERENV','SID')
 and s.statistic# = n.statistic#
 and n.name in ('session logical reads')
 /
