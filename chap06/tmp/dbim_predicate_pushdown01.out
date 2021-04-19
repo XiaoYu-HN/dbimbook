@@ -1,0 +1,190 @@
+[oracle@oracle-19c-vagrant chap06]$ ssb @dbim_predicate_pushdown.sql
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sat Apr 17 08:55:53 2021
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Last Successful login time: Sat Apr 17 2021 08:52:45 +08:00
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+Connected.
+SQL> alter table lineorder no inmemory;
+
+Table altered.
+
+SQL> set pages 999
+SQL> set lines 180
+SQL> SET TERMOUT OFF
+SQL> @../showplan
+SQL> select * from table(dbms_xplan.display_cursor());
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  43g0z02ga0tb6, child number 0
+-------------------------------------
+select * from lineorder where lo_shipmode = 'RAIL' and lo_quantity > 20
+
+Plan hash value: 4017770458
+
+-------------------------------------------------------------------------------
+| Id  | Operation         | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |           |       |       | 45597 (100)|          |
+|*  1 |  TABLE ACCESS FULL| LINEORDER |  1028K|    94M| 45597   (1)| 00:00:02 |
+-------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter(("LO_QUANTITY">20 AND "LO_SHIPMODE"='RAIL'))
+
+
+18 rows selected.
+
+SQL> @../imstats
+SQL> SET PAGES 9999
+SQL> SET LINES 120
+SQL>
+SQL> SELECT
+  2      t1.name,
+  3      t2.value
+  4  FROM
+  5      v$sysstat  t1,
+  6      v$mystat   t2
+  7  WHERE
+  8      ( t1.name IN ( 'CPU used by this session',
+  9                     'physical reads',
+ 10                     'physical reads direct',
+ 11                     'physical reads cache',
+ 12                     'session logical reads',
+ 13                     'session logical reads - IM',
+ 14                     'session pga memory',
+ 15                     'table scans (long tables)',
+ 16                     'table scans (IM)',
+ 17                     'table scan disk IMC fallback' )
+ 18        OR ( t1.name LIKE 'IM scan%' ) )
+ 19      AND t1.statistic# = t2.statistic#
+ 20      AND t2.value != 0
+ 21  ORDER BY
+ 22      t1.name;
+
+NAME                                                                  VALUE
+---------------------------------------------------------------- ----------
+CPU used by this session                                                 85
+physical reads                                                       166563
+physical reads cache                                                     16
+physical reads direct                                                166547
+session logical reads                                                234776
+session pga memory                                                 12435792
+table scans (long tables)                                                 1
+
+7 rows selected.
+
+SQL>
+SQL> @../userlogin
+SQL> connect ssb/Welcome1@orclpdb1
+Connected.
+SQL> set echo on
+SQL> alter table lineorder inmemory;
+
+Table altered.
+
+SQL> exec popwait('SSB', 'LINEORDER', 120);
+
+PL/SQL procedure successfully completed.
+
+SQL> SET TERMOUT OFF
+SQL> @../showplan
+SQL> select * from table(dbms_xplan.display_cursor());
+
+PLAN_TABLE_OUTPUT
+------------------------------------------------------------------------------------------------------------------------
+SQL_ID  43g0z02ga0tb6, child number 0
+-------------------------------------
+select * from lineorder where lo_shipmode = 'RAIL' and lo_quantity > 20
+
+Plan hash value: 4017770458
+
+----------------------------------------------------------------------------------------
+| Id  | Operation                  | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT           |           |       |       |  2497 (100)|          |
+|*  1 |  TABLE ACCESS INMEMORY FULL| LINEORDER |  1028K|    94M|  2497  (33)| 00:00:01 |
+----------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - inmemory(("LO_QUANTITY">20 AND "LO_SHIPMODE"='RAIL'))
+       filter(("LO_QUANTITY">20 AND "LO_SHIPMODE"='RAIL'))
+
+
+19 rows selected.
+
+SQL> @../imstats
+SQL> SET PAGES 9999
+SQL> SET LINES 120
+SQL>
+SQL> SELECT
+  2      t1.name,
+  3      t2.value
+  4  FROM
+  5      v$sysstat  t1,
+  6      v$mystat   t2
+  7  WHERE
+  8      ( t1.name IN ( 'CPU used by this session',
+  9                     'physical reads',
+ 10                     'physical reads direct',
+ 11                     'physical reads cache',
+ 12                     'session logical reads',
+ 13                     'session logical reads - IM',
+ 14                     'session pga memory',
+ 15                     'table scans (long tables)',
+ 16                     'table scans (IM)',
+ 17                     'table scan disk IMC fallback' )
+ 18        OR ( t1.name LIKE 'IM scan%' ) )
+ 19      AND t1.statistic# = t2.statistic#
+ 20      AND t2.value != 0
+ 21  ORDER BY
+ 22      t1.name;
+
+NAME                                                                  VALUE
+---------------------------------------------------------------- ----------
+CPU used by this session                                                135
+IM scan CUs columns accessed                                            408
+IM scan CUs columns theoretical max                                     408
+IM scan CUs current                                                   68515
+IM scan CUs memcompress for query low                                    24
+IM scan CUs no cleanout                                                  24
+IM scan CUs pcode pred evaled                                            72
+IM scan CUs predicates applied                                           48
+IM scan CUs predicates received                                          48
+IM scan CUs readlist creation accumulated time                           16
+IM scan CUs readlist creation number                                     24
+IM scan CUs split pieces                                                 32
+IM scan bytes in-memory                                           573227195
+IM scan bytes uncompressed                                       1140734066
+IM scan delta - only base scan                                           24
+IM scan rows                                                       11997996
+IM scan rows projected                                              1027399
+IM scan rows valid                                                 11997996
+IM scan segments minmax eligible                                         24
+physical reads                                                           32
+physical reads cache                                                     32
+session logical reads                                                168467
+session logical reads - IM                                           166547
+session pga memory                                                 13812048
+table scans (IM)                                                          1
+table scans (long tables)                                                 1
+
+26 rows selected.
+
+SQL>
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+

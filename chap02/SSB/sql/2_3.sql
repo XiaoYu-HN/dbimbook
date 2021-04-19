@@ -1,4 +1,4 @@
-SELECT /* 2.3 SSB_SAMPLE_SQL */
+SELECT /* 2.3 SSB_SAMPLE_SQL */ /*+ MONITOR */
     SUM(lo_revenue),
     d_year,
     p_brand1

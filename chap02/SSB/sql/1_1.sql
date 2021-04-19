@@ -1,4 +1,4 @@
-SELECT /* 1.1 SSB_SAMPLE_SQL */
+SELECT /* 1.1 SSB_SAMPLE_SQL */ /*+ MONITOR */
     SUM(lo_extendedprice * lo_discount) AS revenue
 FROM
     lineorder,

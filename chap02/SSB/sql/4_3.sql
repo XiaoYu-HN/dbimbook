@@ -1,4 +1,4 @@
-SELECT /* 4.3 SSB_SAMPLE_SQL */
+SELECT /* 4.3 SSB_SAMPLE_SQL */ /*+ MONITOR */
     d_year,
     s_city,
     p_brand1,
