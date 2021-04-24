@@ -1,0 +1,198 @@
+[oracle@oracle-19c-vagrant chap06]$ ssb @index_compare.sql
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sat Apr 24 14:14:33 2021
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Last Successful login time: Sat Apr 24 2021 14:12:46 +08:00
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+
+Table altered.
+
+
+PL/SQL procedure successfully completed.
+
+IMCS vs Index Test 1
+___________________
+
+SUM(LO_QUANTITY)
+----------------
+             145
+
+Elapsed: 00:00:00.01
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  13yq9d1puudjd, child number 0
+-------------------------------------
+select sum(lo_quantity) from lineorder where lo_orderkey = 1
+
+Plan hash value: 2267213921
+
+-----------------------------------------------------------------------------------------
+| Id  | Operation                   | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |           |       |       |  1742 (100)|          |
+|   1 |  SORT AGGREGATE             |           |     1 |     9 |            |          |
+|*  2 |   TABLE ACCESS INMEMORY FULL| LINEORDER |     4 |    36 |  1742   (4)| 00:00:01 |
+-----------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - inmemory("LO_ORDERKEY"=1)
+       filter("LO_ORDERKEY"=1)
+
+
+20 rows selected.
+
+
+Index created.
+
+
+SUM(LO_QUANTITY)
+----------------
+             145
+
+Elapsed: 00:00:00.01
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  13yq9d1puudjd, child number 0
+-------------------------------------
+select sum(lo_quantity) from lineorder where lo_orderkey = 1
+
+Plan hash value: 2612236085
+
+--------------------------------------------------------------------------------------------------
+| Id  | Operation                            | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+--------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                     |           |       |       |     4 (100)|          |
+|   1 |  SORT AGGREGATE                      |           |     1 |     9 |            |          |
+|   2 |   TABLE ACCESS BY INDEX ROWID BATCHED| LINEORDER |     4 |    36 |     4   (0)| 00:00:01 |
+|*  3 |    INDEX RANGE SCAN                  | IDX1      |     4 |       |     3   (0)| 00:00:01 |
+--------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   3 - access("LO_ORDERKEY"=1)
+
+
+20 rows selected.
+
+
+Index dropped.
+
+IMCS vs Index Test 2
+___________________
+
+  COUNT(*)
+----------
+   2400427
+
+Elapsed: 00:00:00.01
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  927qdguqzxav4, child number 0
+-------------------------------------
+select count(*) from lineorder where lo_orderpriority like '%LOW%'
+
+Plan hash value: 2267213921
+
+-----------------------------------------------------------------------------------------
+| Id  | Operation                   | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |           |       |       |  1808 (100)|          |
+|   1 |  SORT AGGREGATE             |           |     1 |    16 |            |          |
+|*  2 |   TABLE ACCESS INMEMORY FULL| LINEORDER |   599K|  9373K|  1808   (7)| 00:00:01 |
+-----------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - inmemory(("LO_ORDERPRIORITY" LIKE '%LOW%' AND "LO_ORDERPRIORITY" IS NOT
+              NULL))
+       filter(("LO_ORDERPRIORITY" LIKE '%LOW%' AND "LO_ORDERPRIORITY" IS NOT
+              NULL))
+
+
+22 rows selected.
+
+
+Index created.
+
+
+  COUNT(*)
+----------
+   2400427
+
+Elapsed: 00:00:01.58
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  c5qjqmsydgmu6, child number 0
+-------------------------------------
+select /*+ NO_INMEMORY */ count(*) from lineorder where
+lo_orderpriority like '%LOW%'
+
+Plan hash value: 325870156
+
+------------------------------------------------------------------------------
+| Id  | Operation             | Name | Rows  | Bytes | Cost (%CPU)| Time     |
+------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT      |      |       |       | 12364 (100)|          |
+|   1 |  SORT AGGREGATE       |      |     1 |    16 |            |          |
+|*  2 |   INDEX FAST FULL SCAN| IDX1 |   599K|  9373K| 12364   (1)| 00:00:01 |
+------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(("LO_ORDERPRIORITY" LIKE '%LOW%' AND "LO_ORDERPRIORITY"
+              IS NOT NULL))
+
+
+21 rows selected.
+
+
+Index dropped.
+
+
+  COUNT(*)
+----------
+   2400427
+
+Elapsed: 00:00:01.49
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  c5qjqmsydgmu6, child number 0
+-------------------------------------
+select /*+ NO_INMEMORY */ count(*) from lineorder where
+lo_orderpriority like '%LOW%'
+
+Plan hash value: 2267213921
+
+--------------------------------------------------------------------------------
+| Id  | Operation          | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+--------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |           |       |       | 45476 (100)|          |
+|   1 |  SORT AGGREGATE    |           |     1 |    16 |            |          |
+|*  2 |   TABLE ACCESS FULL| LINEORDER |   599K|  9373K| 45476   (1)| 00:00:02 |
+--------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(("LO_ORDERPRIORITY" LIKE '%LOW%' AND "LO_ORDERPRIORITY"
+              IS NOT NULL))
+
+
+21 rows selected.

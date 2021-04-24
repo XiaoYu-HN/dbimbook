@@ -1,0 +1,311 @@
+[oracle@oracle-19c-vagrant chap06]$ ssb @ima_compare.sql
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sat Apr 24 13:19:40 2021
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Last Successful login time: Sat Apr 24 2021 13:18:35 +08:00
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+Populate table lineorder...
+
+PL/SQL procedure successfully completed.
+
+Populate table date_dim...
+
+PL/SQL procedure successfully completed.
+
+Populate table supplier...
+
+PL/SQL procedure successfully completed.
+
+TEST 1, IMCS enabled, Vector transformation enabled(auto, default)
+_________________________________________________________________
+
+SUM(LO_REVENUE)     D_YEAR S_REGION
+--------------- ---------- ------------
+     1.3573E+12       1996 AMERICA
+     1.3441E+12       1996 ASIA
+     1.3547E+12       1997 AMERICA
+     1.3378E+12       1997 ASIA
+     7.9418E+11       1998 AMERICA
+     7.8566E+11       1998 ASIA
+
+6 rows selected.
+
+Elapsed: 00:00:00.12
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  fztrnj4vtbjmy, child number 0
+-------------------------------------
+SELECT     SUM(lo_revenue),     d_year,     s_region FROM
+lineorder,     date_dim,     supplier WHERE         lo_orderdate =
+d_datekey     AND lo_suppkey = s_suppkey     AND d_year > 1995     AND
+s_region IN ( 'AMERICA', 'ASIA' ) GROUP BY     d_year,     s_region
+ORDER BY     d_year,     s_region
+
+Plan hash value: 1768711973
+
+----------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                | Name                      | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                         |                           |       |       |  1854 (100)|          |
+|   1 |  TEMP TABLE TRANSFORMATION               |                           |       |       |            |          |
+|   2 |   LOAD AS SELECT (CURSOR DURATION MEMORY)| SYS_TEMP_0FD9D667D_B37F5D |       |       |            |          |
+|   3 |    HASH GROUP BY                         |                           |     7 |    98 |     2  (50)| 00:00:01 |
+|   4 |     KEY VECTOR CREATE BUFFERED           | :KV0000                   |     7 |    98 |     1   (0)| 00:00:01 |
+|*  5 |      TABLE ACCESS INMEMORY FULL          | DATE_DIM                  |  1095 | 10950 |     1   (0)| 00:00:01 |
+|   6 |   LOAD AS SELECT (CURSOR DURATION MEMORY)| SYS_TEMP_0FD9D667E_B37F5D |       |       |            |          |
+|   7 |    HASH GROUP BY                         |                           |     5 |   110 |     4  (25)| 00:00:01 |
+|   8 |     KEY VECTOR CREATE BUFFERED           | :KV0001                   |     5 |   110 |     3   (0)| 00:00:01 |
+|*  9 |      TABLE ACCESS INMEMORY FULL          | SUPPLIER                  |  6479 |   113K|     3   (0)| 00:00:01 |
+|  10 |   SORT GROUP BY                          |                           |    25 |  1425 |  1847   (9)| 00:00:01 |
+|* 11 |    HASH JOIN                             |                           |    25 |  1425 |  1846   (9)| 00:00:01 |
+|* 12 |     HASH JOIN                            |                           |    25 |  1075 |  1844   (9)| 00:00:01 |
+|  13 |      TABLE ACCESS FULL                   | SYS_TEMP_0FD9D667E_B37F5D |     5 |   110 |     2   (0)| 00:00:01 |
+|  14 |      VIEW                                | VW_VT_846B3E5D            |    25 |   525 |  1842   (9)| 00:00:01 |
+|  15 |       VECTOR GROUP BY                    |                           |    25 |   600 |  1842   (9)| 00:00:01 |
+|  16 |        HASH GROUP BY                     |                           |    25 |   600 |  1842   (9)| 00:00:01 |
+|  17 |         KEY VECTOR USE                   | :KV0001                   |  5460K|   124M|  1841   (9)| 00:00:01 |
+|  18 |          KEY VECTOR USE                  | :KV0000                   |  5460K|   104M|  1840   (9)| 00:00:01 |
+|* 19 |           TABLE ACCESS INMEMORY FULL     | LINEORDER                 |    11M|   183M|  1840   (9)| 00:00:01 |
+|  20 |     TABLE ACCESS FULL                    | SYS_TEMP_0FD9D667D_B37F5D |     7 |    98 |     2   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   5 - inmemory("D_YEAR">1995)
+       filter("D_YEAR">1995)
+   9 - inmemory(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+       filter(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+  11 - access("ITEM_9"=INTERNAL_FUNCTION("C0"))
+  12 - access("ITEM_8"=INTERNAL_FUNCTION("C0"))
+  19 - inmemory((SYS_OP_KEY_VECTOR_FILTER("LO_ORDERDATE",:KV0000) AND
+              SYS_OP_KEY_VECTOR_FILTER("LO_SUPPKEY",:KV0001)))
+       filter((SYS_OP_KEY_VECTOR_FILTER("LO_ORDERDATE",:KV0000) AND
+              SYS_OP_KEY_VECTOR_FILTER("LO_SUPPKEY",:KV0001)))
+
+Note
+-----
+   - vector transformation used for this statement
+
+
+54 rows selected.
+
+TEST 2, IMCS enabled, Vector transformation DISABLED
+____________________________________________________
+
+Session altered.
+
+
+SUM(LO_REVENUE)     D_YEAR S_REGION
+--------------- ---------- ------------
+     1.3573E+12       1996 AMERICA
+     1.3441E+12       1996 ASIA
+     1.3547E+12       1997 AMERICA
+     1.3378E+12       1997 ASIA
+     7.9418E+11       1998 AMERICA
+     7.8566E+11       1998 ASIA
+
+6 rows selected.
+
+Elapsed: 00:00:00.51
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  fztrnj4vtbjmy, child number 1
+-------------------------------------
+SELECT     SUM(lo_revenue),     d_year,     s_region FROM
+lineorder,     date_dim,     supplier WHERE         lo_orderdate =
+d_datekey     AND lo_suppkey = s_suppkey     AND d_year > 1995     AND
+s_region IN ( 'AMERICA', 'ASIA' ) GROUP BY     d_year,     s_region
+ORDER BY     d_year,     s_region
+
+Plan hash value: 2064805782
+
+----------------------------------------------------------------------------------------------
+| Id  | Operation                        | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                 |           |       |       |  2073 (100)|          |
+|   1 |  SORT GROUP BY                   |           |     5 |   195 |  2073  (19)| 00:00:01 |
+|*  2 |   HASH JOIN                      |           |  8486 |   323K|  2072  (19)| 00:00:01 |
+|*  3 |    TABLE ACCESS INMEMORY FULL    | SUPPLIER  |  6479 |   113K|     3   (0)| 00:00:01 |
+|   4 |    VIEW                          | VW_GBC_10 |  8486 |   174K|  2068  (19)| 00:00:01 |
+|   5 |     HASH GROUP BY                |           |  8486 |   215K|  2068  (19)| 00:00:01 |
+|*  6 |      HASH JOIN                   |           |  5457K|   135M|  1882  (11)| 00:00:01 |
+|   7 |       JOIN FILTER CREATE         | :BF0000   |  1095 | 10950 |     1   (0)| 00:00:01 |
+|*  8 |        TABLE ACCESS INMEMORY FULL| DATE_DIM  |  1095 | 10950 |     1   (0)| 00:00:01 |
+|   9 |       JOIN FILTER USE            | :BF0000   |    11M|   183M|  1840   (9)| 00:00:01 |
+|* 10 |        TABLE ACCESS INMEMORY FULL| LINEORDER |    11M|   183M|  1840   (9)| 00:00:01 |
+----------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("ITEM_1"="S_SUPPKEY")
+   3 - inmemory(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+       filter(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+   6 - access("LO_ORDERDATE"="D_DATEKEY")
+   8 - inmemory("D_YEAR">1995)
+       filter("D_YEAR">1995)
+  10 - inmemory(SYS_OP_BLOOM_FILTER(:BF0000,"LO_ORDERDATE"))
+       filter(SYS_OP_BLOOM_FILTER(:BF0000,"LO_ORDERDATE"))
+
+
+38 rows selected.
+
+
+Session altered.
+
+TEST 3, IMCS disabled, Vector transformation enabled(auto, default)
+___________________________________________________________________
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+SUM(LO_REVENUE)     D_YEAR S_REGION
+--------------- ---------- ------------
+     1.3573E+12       1996 AMERICA
+     1.3441E+12       1996 ASIA
+     1.3547E+12       1997 AMERICA
+     1.3378E+12       1997 ASIA
+     7.9418E+11       1998 AMERICA
+     7.8566E+11       1998 ASIA
+
+6 rows selected.
+
+Elapsed: 00:00:01.25
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  fztrnj4vtbjmy, child number 0
+-------------------------------------
+SELECT     SUM(lo_revenue),     d_year,     s_region FROM
+lineorder,     date_dim,     supplier WHERE         lo_orderdate =
+d_datekey     AND lo_suppkey = s_suppkey     AND d_year > 1995     AND
+s_region IN ( 'AMERICA', 'ASIA' ) GROUP BY     d_year,     s_region
+ORDER BY     d_year,     s_region
+
+Plan hash value: 1768711973
+
+----------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                | Name                      | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                         |                           |       |       | 45574 (100)|          |
+|   1 |  TEMP TABLE TRANSFORMATION               |                           |       |       |            |          |
+|   2 |   LOAD AS SELECT (CURSOR DURATION MEMORY)| SYS_TEMP_0FD9D667F_B37F5D |       |       |            |          |
+|   3 |    HASH GROUP BY                         |                           |     7 |    98 |    14   (8)| 00:00:01 |
+|   4 |     KEY VECTOR CREATE BUFFERED           | :KV0000                   |     7 |    98 |    13   (0)| 00:00:01 |
+|*  5 |      TABLE ACCESS FULL                   | DATE_DIM                  |  1095 | 10950 |    13   (0)| 00:00:01 |
+|   6 |   LOAD AS SELECT (CURSOR DURATION MEMORY)| SYS_TEMP_0FD9D6680_B37F5D |       |       |            |          |
+|   7 |    HASH GROUP BY                         |                           |     5 |   110 |    70   (3)| 00:00:01 |
+|   8 |     KEY VECTOR CREATE BUFFERED           | :KV0001                   |     5 |   110 |    68   (0)| 00:00:01 |
+|*  9 |      TABLE ACCESS FULL                   | SUPPLIER                  |  6479 |   113K|    68   (0)| 00:00:01 |
+|  10 |   SORT GROUP BY                          |                           |    25 |  1425 | 45491   (1)| 00:00:02 |
+|* 11 |    HASH JOIN                             |                           |    25 |  1425 | 45490   (1)| 00:00:02 |
+|* 12 |     HASH JOIN                            |                           |    25 |  1075 | 45488   (1)| 00:00:02 |
+|  13 |      TABLE ACCESS FULL                   | SYS_TEMP_0FD9D6680_B37F5D |     5 |   110 |     2   (0)| 00:00:01 |
+|  14 |      VIEW                                | VW_VT_846B3E5D            |    25 |   525 | 45486   (1)| 00:00:02 |
+|  15 |       VECTOR GROUP BY                    |                           |    25 |   600 | 45486   (1)| 00:00:02 |
+|  16 |        HASH GROUP BY                     |                           |    25 |   600 | 45486   (1)| 00:00:02 |
+|  17 |         KEY VECTOR USE                   | :KV0001                   |  5460K|   124M| 45484   (1)| 00:00:02 |
+|  18 |          KEY VECTOR USE                  | :KV0000                   |  5460K|   104M| 45484   (1)| 00:00:02 |
+|* 19 |           TABLE ACCESS FULL              | LINEORDER                 |    11M|   183M| 45483   (1)| 00:00:02 |
+|  20 |     TABLE ACCESS FULL                    | SYS_TEMP_0FD9D667F_B37F5D |     7 |    98 |     2   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   5 - filter("D_YEAR">1995)
+   9 - filter(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+  11 - access("ITEM_9"=INTERNAL_FUNCTION("C0"))
+  12 - access("ITEM_8"=INTERNAL_FUNCTION("C0"))
+  19 - filter(SYS_OP_KEY_VECTOR_FILTER("LO_ORDERDATE",:KV0000))
+
+Note
+-----
+   - vector transformation used for this statement
+
+
+49 rows selected.
+
+TEST 4, IMCS disable, Vector transformation DISABLED
+____________________________________________________
+
+Session altered.
+
+
+SUM(LO_REVENUE)     D_YEAR S_REGION
+--------------- ---------- ------------
+     1.3573E+12       1996 AMERICA
+     1.3441E+12       1996 ASIA
+     1.3547E+12       1997 AMERICA
+     1.3378E+12       1997 ASIA
+     7.9418E+11       1998 AMERICA
+     7.8566E+11       1998 ASIA
+
+6 rows selected.
+
+Elapsed: 00:00:01.36
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  fztrnj4vtbjmy, child number 1
+-------------------------------------
+SELECT     SUM(lo_revenue),     d_year,     s_region FROM
+lineorder,     date_dim,     supplier WHERE         lo_orderdate =
+d_datekey     AND lo_suppkey = s_suppkey     AND d_year > 1995     AND
+s_region IN ( 'AMERICA', 'ASIA' ) GROUP BY     d_year,     s_region
+ORDER BY     d_year,     s_region
+
+Plan hash value: 2736736070
+
+------------------------------------------------------------------------------------
+| Id  | Operation              | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT       |           |       |       | 45793 (100)|          |
+|   1 |  SORT GROUP BY         |           |     5 |   195 | 45793   (1)| 00:00:02 |
+|*  2 |   HASH JOIN            |           |  8486 |   323K| 45792   (1)| 00:00:02 |
+|*  3 |    TABLE ACCESS FULL   | SUPPLIER  |  6479 |   113K|    68   (0)| 00:00:01 |
+|   4 |    VIEW                | VW_GBC_10 |  8486 |   174K| 45724   (1)| 00:00:02 |
+|   5 |     HASH GROUP BY      |           |  8486 |   215K| 45724   (1)| 00:00:02 |
+|*  6 |      HASH JOIN         |           |  5457K|   135M| 45537   (1)| 00:00:02 |
+|*  7 |       TABLE ACCESS FULL| DATE_DIM  |  1095 | 10950 |    13   (0)| 00:00:01 |
+|   8 |       TABLE ACCESS FULL| LINEORDER |    11M|   183M| 45483   (1)| 00:00:02 |
+------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("ITEM_1"="S_SUPPKEY")
+   3 - filter(("S_REGION"='AMERICA' OR "S_REGION"='ASIA'))
+   6 - access("LO_ORDERDATE"="D_DATEKEY")
+   7 - filter("D_YEAR">1995)
+
+
+32 rows selected.
+
+
+Session altered.
