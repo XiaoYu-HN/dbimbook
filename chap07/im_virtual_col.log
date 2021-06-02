@@ -1,0 +1,219 @@
+[oracle@oracle-19c-vagrant chap07]$ ssb @im_virtual_col.sql
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Wed Jun 2 10:26:30 2021
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Last Successful login time: Wed Jun 02 2021 10:19:45 +08:00
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+
+Table altered.
+
+
+Table altered.
+
+SQL>
+SQL> set timing on
+SQL> select lo_orderpriority, sum(lo_extendedprice * (1 - lo_discount/100)) as discount_price from lineorder group by lo_orderpriority order by lo_orderpriority;
+
+LO_ORDERPRIORIT       DISCOUNT_PRICE
+--------------- --------------------
+1-URGENT           8,725,773,155,172
+2-HIGH             8,735,041,593,624
+3-MEDIUM           8,692,247,365,821
+4-NOT SPECI        8,716,008,117,557
+5-LOW              8,725,203,842,070
+
+Elapsed: 00:00:02.44
+SQL> set timing off
+SQL>
+SQL> alter table lineorder inmemory;
+
+Table altered.
+
+SQL>
+SQL> exec popwait('SSB', 'LINEORDER');
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> set timing on
+SQL> select lo_orderpriority, sum(lo_extendedprice * (1 - lo_discount/100)) as discount_price from lineorder group by lo_orderpriority order by lo_orderpriority;
+
+LO_ORDERPRIORIT       DISCOUNT_PRICE
+--------------- --------------------
+1-URGENT           8,725,773,155,172
+2-HIGH             8,735,041,593,624
+3-MEDIUM           8,692,247,365,821
+4-NOT SPECI        8,716,008,117,557
+5-LOW              8,725,203,842,070
+
+Elapsed: 00:00:01.23
+SQL> set timing off
+SQL>
+SQL> @../imstats
+SQL> SET PAGES 9999
+SQL> SET LINES 250
+SQL>
+SQL> SELECT
+  2      t1.name,
+  3      t2.value
+  4  FROM
+  5      v$sysstat  t1,
+  6      v$mystat   t2
+  7  WHERE
+  8      ( t1.name IN ( 'CPU used by this session',
+  9                     'physical reads',
+ 10                     'physical reads direct',
+ 11                     'physical reads cache',
+ 12                     'session logical reads',
+ 13                     'session logical reads - IM',
+ 14                     'session pga memory',
+ 15                     'table scans (long tables)',
+ 16                     'table scans (IM)',
+ 17                     'table scan disk IMC fallback' )
+ 18        OR ( t1.name LIKE 'IM scan%' ) )
+ 19      AND t1.statistic# = t2.statistic#
+ 20      AND t2.value != 0
+ 21  ORDER BY
+ 22      t1.name;
+
+NAME                                                                            VALUE
+---------------------------------------------------------------- --------------------
+CPU used by this session                                                          373
+IM scan CUs columns accessed                                                       72
+IM scan CUs columns theoretical max                                               408
+IM scan CUs current                                                                24
+IM scan CUs memcompress for query low                                              24
+IM scan CUs no cleanout                                                            24
+IM scan CUs pcode aggregation pushdown                                             24
+IM scan CUs readlist creation accumulated time                                     25
+IM scan CUs readlist creation number                                               24
+IM scan CUs split pieces                                                           33
+IM scan bytes in-memory                                                   573,327,257
+IM scan bytes uncompressed                                              1,140,734,066
+IM scan delta - only base scan                                                     24
+IM scan dict engine results reused                                                 24
+IM scan rows                                                               11,997,996
+IM scan rows pcode aggregated                                              11,997,996
+IM scan rows projected                                                            120
+IM scan rows valid                                                         11,997,996
+physical reads                                                                166,559
+physical reads cache                                                               12
+physical reads direct                                                         166,547
+session logical reads                                                         336,267
+session logical reads - IM                                                    166,547
+session pga memory                                                          6,013,264
+table scans (IM)                                                                    1
+table scans (long tables)                                                           2
+
+26 rows selected.
+
+SQL>
+SQL> alter table lineorder add vcol01 as (lo_extendedprice * (1 - lo_discount/100));
+
+Table altered.
+
+SQL> alter table lineorder no inmemory;
+
+Table altered.
+
+SQL> alter table lineorder inmemory;
+
+Table altered.
+
+SQL> alter system set inmemory_virtual_columns='ENABLE';
+
+System altered.
+
+SQL>
+SQL> exec popwait('SSB', 'LINEORDER');
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> set timing on
+SQL> select lo_orderpriority, sum(lo_extendedprice * (1 - lo_discount/100)) as discount_price from lineorder group by lo_orderpriority order by lo_orderpriority;
+
+LO_ORDERPRIORIT       DISCOUNT_PRICE
+--------------- --------------------
+1-URGENT           8,725,773,155,172
+2-HIGH             8,735,041,593,624
+3-MEDIUM           8,692,247,365,821
+4-NOT SPECI        8,716,008,117,557
+5-LOW              8,725,203,842,070
+
+Elapsed: 00:00:00.31
+SQL> set timing off
+SQL>
+SQL> @../imstats
+SQL> SET PAGES 9999
+SQL> SET LINES 250
+SQL>
+SQL> SELECT
+  2      t1.name,
+  3      t2.value
+  4  FROM
+  5      v$sysstat  t1,
+  6      v$mystat   t2
+  7  WHERE
+  8      ( t1.name IN ( 'CPU used by this session',
+  9                     'physical reads',
+ 10                     'physical reads direct',
+ 11                     'physical reads cache',
+ 12                     'session logical reads',
+ 13                     'session logical reads - IM',
+ 14                     'session pga memory',
+ 15                     'table scans (long tables)',
+ 16                     'table scans (IM)',
+ 17                     'table scan disk IMC fallback' )
+ 18        OR ( t1.name LIKE 'IM scan%' ) )
+ 19      AND t1.statistic# = t2.statistic#
+ 20      AND t2.value != 0
+ 21  ORDER BY
+ 22      t1.name;
+
+NAME                                                                            VALUE
+---------------------------------------------------------------- --------------------
+CPU used by this session                                                          408
+IM scan CUs columns accessed                                                      144
+IM scan CUs columns theoretical max                                               816
+IM scan CUs current                                                                48
+IM scan CUs memcompress for query low                                              48
+IM scan CUs no cleanout                                                            48
+IM scan CUs pcode aggregation IME                                                  24
+IM scan CUs pcode aggregation pushdown                                             48
+IM scan CUs readlist creation accumulated time                                     38
+IM scan CUs readlist creation number                                               48
+IM scan CUs split pieces                                                           90
+IM scan EU bytes in-memory                                                140,499,372
+IM scan EU bytes uncompressed                                              80,098,802
+IM scan EU rows                                                            11,997,996
+IM scan EUs columns accessed                                                       24
+IM scan EUs columns theoretical max                                               432
+IM scan EUs memcompress for query low                                              24
+IM scan EUs split pieces                                                           22
+IM scan bytes in-memory                                                 1,146,654,498
+IM scan bytes uncompressed                                              2,281,468,132
+IM scan delta - only base scan                                                     48
+IM scan dict engine results reused                                                 48
+IM scan rows                                                               23,995,992
+IM scan rows pcode aggregated                                              23,995,992
+IM scan rows projected                                                            240
+IM scan rows valid                                                         23,995,992
+physical reads                                                                166,567
+physical reads cache                                                               20
+physical reads direct                                                         166,547
+session logical reads                                                         503,395
+session logical reads - IM                                                    333,094
+session pga memory                                                          6,078,800
+table scans (IM)                                                                    2
+table scans (long tables)                                                           3
+
+34 rows selected.
+

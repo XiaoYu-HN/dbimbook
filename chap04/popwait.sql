@@ -36,7 +36,7 @@ END popwait;
 set serveroutput on
 alter table lineorder no inmemory;
 alter table lineorder inmemory;
-exec popwait('ssb', 'lineorder');
+exec popwait('SSB', 'LINEORDER');
 
 SELECT
     segment_name,
