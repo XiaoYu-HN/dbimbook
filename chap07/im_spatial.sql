@@ -3,7 +3,7 @@ DELETE FROM USER_SDO_GEOM_METADATA;
 create table t2( id number, geometry SDO_GEOMETRY);
 
 begin
-for i in 1..1000
+for i in 1..1000000
 loop
 	    INSERT INTO t2 VALUES (
         i,
@@ -44,8 +44,3 @@ CREATE INDEX t2_sidx ON
     )
         INDEXTYPE IS mdsys.spatial_index PARAMETERS (' SDO_INDX_DIMS=2');
 
-select a.id, b.id from t2 a, t2 b
-where a.id != b.id and SDO_WITHIN_DISTANCE(
-        a.GEOMETRY, b.GEOMETRY, 'distance=50 unit=km'
-    ) = 'TRUE';
-    
