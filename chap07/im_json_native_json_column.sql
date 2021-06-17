@@ -64,6 +64,8 @@ SELECT
 FROM
     v$im_col_cu;
 
+@../userlogin
+
 -- Test SQL
 SELECT
     po.po_document
