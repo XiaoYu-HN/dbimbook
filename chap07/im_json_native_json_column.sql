@@ -78,5 +78,3 @@ WHERE
 
 @../imstats
 
-
-ALTER TABLE j_purchaseorder NO INMEMORY;
