@@ -15,6 +15,7 @@ DROP USER ssb CASCADE;
 CREATE USER ssb IDENTIFIED BY "$SSBPassword";
 
 GRANT dba, unlimited tablespace TO ssb;
+GRANT SELECT ON v_$im_segments TO ssb;
 
 ALTER SESSION SET CURRENT_SCHEMA = ssb;
 
