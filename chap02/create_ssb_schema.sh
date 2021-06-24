@@ -15,7 +15,6 @@ DROP USER ssb CASCADE;
 CREATE USER ssb IDENTIFIED BY "$SSBPassword";
 
 GRANT dba, unlimited tablespace TO ssb;
-GRANT SELECT ON v_$im_segments TO ssb;
 
 ALTER SESSION SET CURRENT_SCHEMA = ssb;
 
@@ -50,3 +49,13 @@ CREATE TABLE date_dim (
  D_WEEKDAYFL char(1)) ;
 
 EOF
+
+
+sqlplus / as sysdba <<'EOF'
+
+ALTER SESSION SET CONTAINER = orclpdb1;
+
+GRANT SELECT ON v_$im_segments TO ssb;
+
+EOF
+
