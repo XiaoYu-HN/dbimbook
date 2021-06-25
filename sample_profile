@@ -1,0 +1,6 @@
+export PATH=~/sqlcl/bin:$PATH
+alias sqlplus='rlwrap sqlplus'
+alias ssb='sqlplus ssb/Welcome1@orclpdb1'
+alias sys='sqlplus sys/Welcome1@orclpdb1 as sysdba'
+alias sqlssb='sql ssb/Welcome1@orclpdb1'
+alias sqlsys='sql sys/Welcome1@orclpdb1 as sysdba'
