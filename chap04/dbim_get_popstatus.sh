@@ -3,7 +3,7 @@ sqlplus -S /nolog << 'EOF'
 @../userlogin.sql
 
 COL owner FORMAT A6
-COL segment_name heading 'SEGMENT|NAME' FORMAT A10
+COL segment_name heading 'SEGMENT|NAME' FORMAT A12
 COL populate_status heading 'POPULATED|STATUS'
 COL "IN_MEM_SIZE(KB)" heading 'IN MEM|SIZE(KB)' FORMAT 999,999,999
 COL "ON_DISK_SIZE(KB)" heading 'ON DISK|SIZE(KB)' FORMAT 999,999,999
