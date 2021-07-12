@@ -1,6 +1,6 @@
-drop table customer_ext;
+drop table customer_ext_bd_cloud;
 
-create table customer_ext(
+create table customer_ext_bd_cloud(
     c_custkey     NUMBER,
     c_name        VARCHAR(25),
     c_address     VARCHAR(25),
@@ -17,7 +17,9 @@ ORGANIZATION EXTERNAL
    (
     com.oracle.bigdata.fileformat = textfile 
     com.oracle.bigdata.csv.skip.header=0
-    com.oracle.bigdata.csv.rowformat.fields.terminator = ','
+    com.oracle.bigdata.csv.rowformat.quotecharacter='"'
    )
-   location ('https://raw.githubusercontent.com/XiaoYu-HN/dbimbook/main/chap10/*.csv')
+   location ('https://objectstorage.us-ashburn-1.oraclecloud.com/n/ocichina001/b/b01/o/customer.csv')
   )  REJECT LIMIT UNLIMITED;
+
+select count(*) from customer_ext_bd_cloud;
