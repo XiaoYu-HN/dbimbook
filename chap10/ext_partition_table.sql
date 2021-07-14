@@ -1,6 +1,6 @@
 DROP DIRECTORY default_dir;
 
-CREATE DIRECTORY default_dir AS '/home/oracle/dbimbook/chap10';
+CREATE DIRECTORY default_dir AS '/tmp';
 
 DROP TABLE test_ext_partition;
 
