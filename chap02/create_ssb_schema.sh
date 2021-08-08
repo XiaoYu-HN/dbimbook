@@ -100,5 +100,7 @@ ALTER SESSION SET CONTAINER = orclpdb1;
 
 GRANT SELECT ON v_$im_segments TO ssb;
 
+@../chap04/popwait.sql
+
 EOF
 
