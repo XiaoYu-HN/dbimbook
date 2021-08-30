@@ -1,4 +1,3 @@
-DROP TABLE t1;
 
 CREATE TABLE t1 (
     id      INT,
@@ -45,12 +44,38 @@ END;
 
 EXEC filltab(1000000);
 
-/*
-alter table t1 inmemory no inmemory(id);
+ALTER TABLE t1 ADD PRIMARY KEY(id);
 
-select /*+ FULL(p) NO_PARALLEL(p) */ count(*) from t1 p;
+COL TABLE_NAME FOR A16
+COL SEGMENT_NAME FOR A16
+COL INDEX_NAME FOR A20
 
-select inmemory_size, bytes from v$im_segments where segment_name = 'T1';
+SELECT table_name, compression, compress_for FROM user_tables WHERE table_name IN ('T1');
 
-*/
+CREATE TABLE t1_tmp ROW STORE COMPRESS ADVANCED AS SELECT * FROM t1 WHERE 1=2;
 
+EXEC dbms_redefinition.can_redef_table('ssb', 't1');
+
+EXEC dbms_redefinition.start_redef_table('ssb', 't1', 't1_tmp');
+
+DECLARE
+  num_errs PLS_INTEGER;
+BEGIN
+	dbms_redefinition.COPY_TABLE_DEPENDENTS('ssb', 't1', 't1_tmp',
+	dbms_redefinition.cons_orig_params,TRUE, TRUE, TRUE, TRUE, num_errs);
+END;
+/
+
+
+EXEC dbms_redefinition.sync_interim_table('ssb', 't1', 't1_tmp');
+
+EXEC dbms_redefinition.finish_redef_table('ssb', 't1', 't1_tmp');
+
+SELECT segment_name, BYTES FROM user_segments WHERE segment_name IN ('T1', 'T1_TMP');
+
+SELECT table_name, compression, compress_for FROM user_tables WHERE table_name IN ('T1', 'T1_TMP');
+
+SELECT index_name, table_name, uniqueness FROM user_indexes WHERE table_name IN ('T1', 'T1_TMP');
+
+DROP TABLE t1_tmp;
+DROP TABLE t1;
