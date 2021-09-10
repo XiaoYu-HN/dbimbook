@@ -1,0 +1,15 @@
+DROP TABLE nation PURGE;
+
+DROP TABLE region PURGE;
+
+DROP TABLE part PURGE;
+
+DROP TABLE supplier PURGE;
+
+DROP TABLE partsupp PURGE;
+
+DROP TABLE customer PURGE;
+
+DROP TABLE orders PURGE;
+
+DROP TABLE lineitem PURGE;

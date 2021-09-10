@@ -18,7 +18,8 @@ WHERE
                    'table scans (long tables)',
                    'table scans (IM)',
                    'table scan disk IMC fallback' )
-      OR ( t1.name LIKE 'IM scan%' ) )
+      OR ( t1.name LIKE 'IM scan%' ) 
+      OR ( t1.name LIKE 'IM simd%' ) )
     AND t1.statistic# = t2.statistic#
     AND t2.value != 0
 ORDER BY
