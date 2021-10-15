@@ -1,6 +1,6 @@
 #!/bin/bash
 # this script will create user SSB and 5 SSB schema tables under it
-# you should input password for new created SSB user 
+# you will be prompted to input the password for user SSB 
 
 read -sp "Please input password for user SSB you will create:" SSBPassword
 
