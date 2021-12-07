@@ -18,7 +18,7 @@ end;
 */
 
 create table t2 as 
-select level as id, round(dbms_random.value(1,1000)) as v1, dbms_random.string('L', 2) as v2, 'ABCDEFGH' as v3 from dual connect by 1=1 and level <= 2000000;
+select level as id, round(dbms_random.value(1,1000)) as v1, dbms_random.string('L', 2) as v2, 'ABCDEFGH' as v3 from dual connect by level <= 2000000;
 
 /*
 select count(*) from t2;
