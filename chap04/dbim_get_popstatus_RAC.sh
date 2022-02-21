@@ -12,17 +12,25 @@ COL compression_ratio heading 'COMPRESSION|RATIO'
 SET LINESIZE 140
 
 SELECT
+    inst_id,
     owner,
     segment_name,
-    inmemory_size / 1024                 AS "IN_MEM_SIZE(KB)",
-    bytes / 1024                         AS "ON_DISK_SIZE(KB)",
-    round(bytes / inmemory_size, 2)      AS "COMPRESSION_RATIO",
+    inmemory_size / 1024                                    AS "IN_MEM_SIZE(KB)",
+    bytes / 1024                                            AS "ON_DISK_SIZE(KB)",
+    round((bytes - bytes_not_populated) / inmemory_size, 2) AS "COMPRESSION_RATIO",
     bytes_not_populated,
     populate_status
 FROM
-    v$im_segments;
+    gv$im_segments
+ORDER BY
+    segment_name,
+    inst_id ASC;
 
-select sum(bytes)/1024 as "TOTAL_DISK_SIZE(KB)", sum(inmemory_size)/1024 as "TOTAL_IM_SIZE(KB)",
-round(sum(bytes)/sum(inmemory_size),2) as OVERALL_COMPRESSION_RATIO from v$im_segments;
+SELECT
+    ( SUM(bytes) - SUM(bytes_not_populated) ) / 1024                       AS "TOTAL_DISK_SIZE(KB)",
+    SUM(inmemory_size) / 1024                                              AS "TOTAL_IM_SIZE(KB)",
+    round((SUM(bytes) - SUM(bytes_not_populated)) / SUM(inmemory_size), 2) AS overall_compression_ratio
+FROM
+    gv$im_segments;
 
 EOF
