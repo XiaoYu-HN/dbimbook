@@ -6,18 +6,20 @@ col segment_name for a16
 col partition_name for a16
 column inmemory_compression heading 'INMEMORY|COMPRESSION' format a18;
 column inmemory_priority heading 'INMEMORY|PRIORITY' format a10;
-set lines 100
+column inmemory_duplicate heading 'INMEMORY|DUPLICATE' format a12;
+column inmemory_distribute heading 'INMEMORY|DISTRIBUTE' format a12;
+set lines 140
 
 SELECT
     segment_name,
---    partition_name,
     segment_type,
-    inmemory,
     inmemory_priority,
-    inmemory_compression
+    inmemory_compression,
+    inmemory_duplicate,
+    inmemory_distribute
 FROM
     dba_segments
 WHERE
-    segment_name IN ( 'CUSTOMER', 'DATE_DIM', 'LINEORDER', 'PART', 'SUPPLIER' );
+    inmemory='ENABLED';    
 
 EOF
