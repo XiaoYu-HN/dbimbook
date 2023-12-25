@@ -7,7 +7,7 @@ ALTER SESSION SET CONTAINER = orclpdb1;
 ALTER SESSION SET CURRENT_SCHEMA = ssb;
 
 col table_name for a20;
-col count format 999,999,999;
+col count format 999,999,999,999;
 
 select
    table_name,
