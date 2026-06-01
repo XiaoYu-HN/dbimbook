@@ -2,13 +2,14 @@ sqlplus -S /nolog <<'EOF'
 
 @../userlogin.sql
 
-col segment_name for a16
+col segment_name for a30
 col partition_name for a16
 column inmemory_compression heading 'INMEMORY|COMPRESSION' format a18;
 column inmemory_priority heading 'INMEMORY|PRIORITY' format a10;
 column inmemory_duplicate heading 'INMEMORY|DUPLICATE' format a16;
 column inmemory_distribute heading 'INMEMORY|DISTRIBUTE' format a16;
 set lines 140
+set pages 9999
 
 SELECT
     segment_name,
