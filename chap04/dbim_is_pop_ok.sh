@@ -2,8 +2,9 @@ sqlplus -S /nolog << 'EOF'
 
 @../userlogin.sql
 
-COL segment_name FORMAT A12
+COL segment_name FORMAT A32
 COL populate_status FORMAT A20
+SET PAGES 9999
 
 SELECT
     segment_name,
