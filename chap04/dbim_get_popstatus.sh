@@ -21,7 +21,10 @@ SELECT
     bytes_not_populated,
     populate_status
 FROM
-    v$im_segments;
+    v$im_segments
+ORDER BY
+    owner,
+    segment_name;
 
 select sum(bytes)/1024 as "TOTAL_DISK_SIZE(KB)", sum(inmemory_size)/1024 as "TOTAL_IM_SIZE(KB)",
 round(sum(bytes)/sum(inmemory_size),2) as OVERALL_COMPRESSION_RATIO from v$im_segments;
